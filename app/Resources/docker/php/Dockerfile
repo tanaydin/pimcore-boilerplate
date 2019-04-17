@@ -4,7 +4,7 @@ ARG USERNAME
 ARG USERID
 ARG GROUPID
 
-RUN useradd $USERNAME
+RUN useradd --create-home $USERNAME
 RUN usermod --uid $USERID $USERNAME
 RUN usermod --gid $GROUPID $USERNAME
 RUN usermod -aG "www-data" $USERNAME
@@ -13,7 +13,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y
 
 RUN apt-get install -y \
     git \
-    zip
+    zip \
+    webp
 
 RUN apt-get install -y \
     libcurl4-openssl-dev \

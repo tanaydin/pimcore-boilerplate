@@ -24,7 +24,7 @@ nbproject
 /web/var/
 
 # Local
-#/.env
+/.env
 !/app/config/local
 /app/config/local/*
 !app/config/local/.gitkeep
