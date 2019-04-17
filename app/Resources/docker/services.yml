@@ -3,6 +3,9 @@ version: '3'
 services:
 
     mysql:
+        image: '${PROJECT_NAME}/mysql'
+        container_name: '${PROJECT_NAME}_mysql'
+        hostname: '${MYSQL_HOST}'
         build:
             context: './mysql'
             dockerfile: 'Dockerfile'
@@ -15,6 +18,9 @@ services:
             - '${MYSQL_PORT_BINDING}:${MYSQL_PORT}'
 
     redis:
+        image: '${PROJECT_NAME}/redis'
+        container_name: '${PROJECT_NAME}_redis'
+        hostname: '${REDIS_HOST}'
         build:
             context: './redis'
             dockerfile: 'Dockerfile'
@@ -22,12 +28,16 @@ services:
             - '${REDIS_PORT_BINDING}:${REDIS_PORT}'
 
     php:
+        image: '${PROJECT_NAME}/php'
+        container_name: '${PROJECT_NAME}_php'
+        hostname: '${PHP_HOST}'
         build:
             context: './php'
             dockerfile: 'Dockerfile'
         volumes:
             - '${HOST_ROOT}/:${DOCKER_ROOT}'
         working_dir: '${DOCKER_ROOT}'
+        user: '${USER}'
         env_file:
           - '${HOST_ROOT}/.env'
         environment:
@@ -43,12 +53,15 @@ services:
             - 'redis'
 
     apache:
+        image: '${PROJECT_NAME}/apache'
+        container_name: '${PROJECT_NAME}_apache'
+        hostname: '${APACHE_HOST}'
         build:
             context: './apache'
             dockerfile: 'Dockerfile'
         volumes:
             - '${HOST_ROOT}/:${DOCKER_ROOT}'
-        working_dir: '${DOCKER_DOCUMENT_ROOT}'
+        working_dir: '${DOCUMENT_ROOT}'
         ports:
             - '${APACHE_PORT_BINDING}:${APACHE_PORT}'
         depends_on:
