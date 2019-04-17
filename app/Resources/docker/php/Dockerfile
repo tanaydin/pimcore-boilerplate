@@ -23,7 +23,6 @@ RUN apt-get install -y \
     libicu-dev \
     libzip-dev \
     libbz2-dev \
-    libyaml-dev \
     libmagickwand-dev \
     libmemcached-dev
 
