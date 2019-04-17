@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+
+    mysql:
+        build:
+            context: './mysql'
+            dockerfile: 'Dockerfile'
+        environment:
+            - 'MYSQL_DATABASE=${MYSQL_DATABASE}'
+            - 'MYSQL_USER=${MYSQL_USERNAME}'
+            - 'MYSQL_PASSWORD=${MYSQL_PASSWORD}'
+            - 'MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}'
+        ports:
+            - '${MYSQL_PORT_BINDING}:${MYSQL_PORT}'
+
+    redis:
+        build:
+            context: './redis'
+            dockerfile: 'Dockerfile'
+        ports:
+            - '${REDIS_PORT_BINDING}:${REDIS_PORT}'
+
+    php:
+        build:
+            context: './php'
+            dockerfile: 'Dockerfile'
+        volumes:
+            - '${HOST_ROOT}/:${DOCKER_ROOT}'
+        working_dir: '${DOCKER_ROOT}'
+        env_file:
+          - '${HOST_ROOT}/.env'
+        environment:
+            - 'PIMCORE_INSTALL_ADMIN_USERNAME=${PIMCORE_USERNAME}'
+            - 'PIMCORE_INSTALL_ADMIN_PASSWORD=${PIMCORE_PASSWORD}'
+            - 'PIMCORE_INSTALL_MYSQL_HOST_SOCKET=${MYSQL_HOST}'
+            - 'PIMCORE_INSTALL_MYSQL_USERNAME=${MYSQL_USERNAME}'
+            - 'PIMCORE_INSTALL_MYSQL_PASSWORD=${MYSQL_PASSWORD}'
+            - 'PIMCORE_INSTALL_MYSQL_DATABASE=${MYSQL_DATABASE}'
+            - 'PIMCORE_INSTALL_MYSQL_PORT=${MYSQL_PORT}'
+        depends_on:
+            - 'mysql'
+            - 'redis'
+
+    apache:
+        build:
+            context: './apache'
+            dockerfile: 'Dockerfile'
+        volumes:
+            - '${HOST_ROOT}/:${DOCKER_ROOT}'
+        working_dir: '${DOCKER_DOCUMENT_ROOT}'
+        ports:
+            - '${APACHE_PORT_BINDING}:${APACHE_PORT}'
+        depends_on:
+            - 'php'

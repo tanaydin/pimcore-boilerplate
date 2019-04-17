@@ -1,0 +1,110 @@
+{
+    "name": "youwe/pimcore-boilerplate",
+    "description": "",
+    "type": "project",
+    "keywords": ["Youwe", "Pimcore", "boilerplate"],
+    "homepage": "https://www.github.com/jeroenvanderlaan",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Jeroen van der Laan",
+            "email": "jeroenvanderlaan91@gmail.com",
+            "homepage": "https://www.github.com/jeroenvanderlaan",
+            "role": "Developer"
+        }
+    ],
+
+    "require": {
+        "php": ">=7.2",
+        "ext-bcmath": "*",
+        "ext-bz2": "*",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-exif": "*",
+        "ext-fileinfo": "*",
+        "ext-gettext": "*",
+        "ext-gd": "*",
+        "ext-iconv": "*",
+        "ext-intl": "*",
+        "ext-mbstring": "*",
+        "ext-mysqli": "*",
+        "ext-zend-opcache": "*",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "ext-simplexml": "*",
+        "ext-zip": "*",
+        "ext-apcu": "*",
+        "ext-memcached": "*",
+        "ext-imagick": "*",
+        "ext-redis": "*",
+        "pimcore/pimcore": "^5.7"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "": ["src/"],
+            "Pimcore\\Model\\DataObject\\": "var/classes/DataObject",
+            "Pimcore\\Model\\Object\\": "var/classes/Object",
+            "Website\\": "legacy/website/lib"
+        },
+        "classmap": [
+            "app/AppKernel.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": ["tests/"]
+        }
+    },
+    "scripts": {
+        "post-create-project-cmd": "Pimcore\\Composer::postCreateProject",
+        "post-install-cmd": [
+            "Pimcore\\Composer::postInstall",
+            "@symfony-scripts"
+        ],
+        "post-update-cmd": [
+            "Pimcore\\Composer::postUpdate",
+            "@symfony-scripts",
+            "Pimcore\\Composer::executeMigrationsUp"
+        ],
+        "pre-package-update": [
+            "Pimcore\\Composer::prePackageUpdate"
+        ],
+        "symfony-scripts": [
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ]
+    },
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
+        "symfony-web-dir": "web",
+        "symfony-tests-dir": "tests",
+        "symfony-assets-install": "relative",
+        "merge-plugin": {
+            "include": [
+                "composer.local.json"
+            ],
+            "recurse": true,
+            "replace": true,
+            "merge-dev": true,
+            "merge-extra": false,
+            "merge-extra-deep": false,
+            "merge-scripts": false
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.2"
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
