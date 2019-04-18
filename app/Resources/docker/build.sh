@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 
 #Removing containers and images
-docker-compose down --volumes --remove-orphans --rmi local
-
-#Pulling images
-docker-compose pull
+docker-compose down --volumes --remove-orphans --rmi all
 
 #Building mysql
 docker-compose build "mysql"
