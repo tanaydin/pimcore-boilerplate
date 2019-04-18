@@ -3,29 +3,32 @@
 #Removing containers and images
 docker-compose down --volumes --remove-orphans --rmi local
 
+#Pulling images
+docker-compose pull
+
 #Building mysql
-docker-compose build --pull "mysql"
+docker-compose build "mysql"
 
 #Starting mysql (giving it time to initialize)
-docker-compose up --no-build --force-recreate --remove-orphans --detach "mysql"
+docker-compose up --no-build --remove-orphans --detach "mysql"
 
 #Building php (with build arguments to create hosting user)
-docker-compose build --pull --build-arg USERNAME=$(id -nu) --build-arg USERID=$(id -u) --build-arg GROUPID=$(id -g) "php"
+docker-compose build --build-arg USERNAME=$(id -nu) --build-arg USERID=$(id -u) --build-arg GROUPID=$(id -g) "php"
 
 #Building redis
-docker-compose build --pull "redis"
+docker-compose build "redis"
 
 #Building apache
-docker-compose build --pull "apache"
+docker-compose build "apache"
 
 #Starting redis
-docker-compose up --no-build --force-recreate --remove-orphans --detach "redis"
+docker-compose up --no-build --remove-orphans --detach "redis"
 
 #Starting php
-docker-compose up --no-build --force-recreate --remove-orphans --detach "php"
+docker-compose up --no-build --remove-orphans --detach "php"
 
 #Starting apache
-docker-compose up --no-build --force-recreate --remove-orphans --detach "apache"
+docker-compose up --no-build --remove-orphans --detach "apache"
 
 #Clearing var directories
 docker-compose exec php bash -c "rm -rf var/ web/var/ web/bundles/"
