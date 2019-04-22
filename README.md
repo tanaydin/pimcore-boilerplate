@@ -13,7 +13,7 @@
 ```
 git clone git@github.com:JeroenVanDerLaan/pimcore-boilerplate.git && \ 
 cd pimcore-boilerplate && \
-./app/Resources/docker/build.sh
+./app/Resources/docker/install.sh
 ```
 
 **Custom Install:**
@@ -21,7 +21,7 @@ cd pimcore-boilerplate && \
 * Clone the repo `git clone git@github.com:JeroenVanDerLaan/pimcore-boilerplate.git`
 * Go to the project root `cd pimcore-boilerplate`
 * (Optional) Edit `.env` to customize the environment
-* Run the build `./app/Resources/docker/build.sh`
+* Run the build `./app/Resources/docker/install.sh`
 
 Pimcore will be available at `127.0.0.1:8080/admin`
 
@@ -44,6 +44,6 @@ has access to composer, can run your unit tests, etc.
 
 * Build process should be aware of mysql initialization status
 * Build script should stop and clean up if something goes wrong
-* Not all container configuration is synchronized with `.env` (like apache's virtual host)
+* Not all container configuration is synchronized with `.env`
 * Pimcore complains about missing email settings
 * Redis is not configured as the default Pimcore cache

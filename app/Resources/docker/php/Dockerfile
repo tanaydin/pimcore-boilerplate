@@ -1,13 +1,12 @@
 FROM php:7.2-fpm
 
-ARG USERNAME
-ARG USERID
-ARG GROUPID
+ARG user
+ARG uid
+ARG gid
 
-RUN useradd --create-home $USERNAME
-RUN usermod --uid $USERID $USERNAME
-RUN usermod --gid $GROUPID $USERNAME
-RUN usermod -aG "www-data" $USERNAME
+RUN useradd --create-home $user
+RUN usermod --uid $uid --gid $gid $user
+RUN usermod -aG $user "www-data"
 
 RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y
 
@@ -77,5 +76,3 @@ RUN docker-php-ext-enable \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY ./*.ini /usr/local/etc/php/conf.d/
-
-USER $USERNAME

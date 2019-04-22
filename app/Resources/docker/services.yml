@@ -9,13 +9,14 @@ services:
         build:
             context: './mysql'
             dockerfile: 'Dockerfile'
+        env_file:
+            - '../../../.env'
         environment:
-            - 'MYSQL_DATABASE=${MYSQL_DATABASE}'
-            - 'MYSQL_USER=${MYSQL_USERNAME}'
-            - 'MYSQL_PASSWORD=${MYSQL_PASSWORD}'
             - 'MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}'
         ports:
             - '${MYSQL_PORT_BINDING}:${MYSQL_PORT}'
+        volumes:
+            - '../../../var/mysql:/var/log/app'
 
     redis:
         image: '${PROJECT_NAME}/redis'
@@ -34,20 +35,23 @@ services:
         build:
             context: './php'
             dockerfile: 'Dockerfile'
-        volumes:
-            - '${HOST_ROOT}/:${DOCKER_ROOT}'
-        working_dir: '${DOCKER_ROOT}'
-        user: '${USER}'
         env_file:
-          - '${HOST_ROOT}/.env'
+            - '../../../.env'
         environment:
             - 'PIMCORE_INSTALL_ADMIN_USERNAME=${PIMCORE_USERNAME}'
             - 'PIMCORE_INSTALL_ADMIN_PASSWORD=${PIMCORE_PASSWORD}'
             - 'PIMCORE_INSTALL_MYSQL_HOST_SOCKET=${MYSQL_HOST}'
-            - 'PIMCORE_INSTALL_MYSQL_USERNAME=${MYSQL_USERNAME}'
+            - 'PIMCORE_INSTALL_MYSQL_USERNAME=${MYSQL_USER}'
             - 'PIMCORE_INSTALL_MYSQL_PASSWORD=${MYSQL_PASSWORD}'
             - 'PIMCORE_INSTALL_MYSQL_DATABASE=${MYSQL_DATABASE}'
             - 'PIMCORE_INSTALL_MYSQL_PORT=${MYSQL_PORT}'
+        ports:
+            - '${PHP_PORT_BINDING}:${PHP_PORT}'
+        volumes:
+            - '../../..:/data/projects/pimcore'
+            - '../../../var/php:/var/log/app'
+        working_dir: '/data/projects/pimcore'
+        user: '${USER}'
         depends_on:
             - 'mysql'
             - 'redis'
@@ -59,10 +63,13 @@ services:
         build:
             context: './apache'
             dockerfile: 'Dockerfile'
-        volumes:
-            - '${HOST_ROOT}/:${DOCKER_ROOT}'
-        working_dir: '${DOCUMENT_ROOT}'
+        env_file:
+            - '../../../.env'
         ports:
             - '${APACHE_PORT_BINDING}:${APACHE_PORT}'
+        volumes:
+            - '../../../web:/data/projects/pimcore/web'
+            - '../../../var/apache:/var/log/app'
+        working_dir: '/data/projects/pimcore/web'
         depends_on:
             - 'php'

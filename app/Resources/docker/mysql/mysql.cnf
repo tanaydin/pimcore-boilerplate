@@ -8,3 +8,10 @@ default-character-set = utf8mb4
 collation-server = utf8mb4_unicode_ci
 character-set-server = utf8mb4
 default-authentication-plugin=mysql_native_password
+
+general-log = 1
+slow_query_log = 0
+log-error = /var/log/app/error.log
+#log-bin = /var/log/app/bin.log
+general-log-file = /var/log/app/general.log
+slow_query_log_file = /var/log/app/slow_query.log
