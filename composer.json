@@ -5,7 +5,7 @@
     "keywords": ["Youwe", "Pimcore", "boilerplate"],
     "homepage": "https://www.github.com/jeroenvanderlaan",
     "license": "proprietary",
-    "readme": "README.md",
+    "readme": "app/Resources/docs/README.md",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "authors": [
