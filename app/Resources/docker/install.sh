@@ -7,11 +7,11 @@ gid=$(id -g)
 #Removing containers and images
 docker-compose down --volumes --remove-orphans --rmi all
 
-#Warming up var directories
-bash -c "rm -rf var/ web/var/ web/bundles/"
-bash -c "mkdir --parents var/ web/var/ web/bundles/"
+#Warming up directories
+bash -c "rm -rf vendor/ var/ web/var/ web/bundles/"
+bash -c "mkdir --parents vendor/ var/ web/var/ web/bundles/"
 bash -c "git checkout var/ web/var/ web/bundles/"
-bach -c "cp --no-clobber --recursive app/Resources/docker/logs/* var/"
+bash -c "cp --no-clobber --recursive app/Resources/docker/logs/* var/"
 
 #Building mysql
 docker-compose build --build-arg user=${user} --build-arg uid=${uid} --build-arg gid=${gid} "mysql"

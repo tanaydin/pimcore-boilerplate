@@ -69,6 +69,7 @@ services:
             - '${APACHE_PORT_BINDING}:${APACHE_PORT}'
         volumes:
             - '../../../web:/data/projects/pimcore/web'
+            - '../../../vendor:/data/projects/pimcore/vendor'
             - '../../../var/apache:/var/log/app'
         working_dir: '/data/projects/pimcore/web'
         depends_on:
