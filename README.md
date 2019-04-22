@@ -31,11 +31,9 @@ The installation will build and start four docker services on your machine: `mys
 They are all required to be up and running in order for your Pimcore application to work properly.
 This can be done easily by navigating to the project root, and executing `docker-compose up -d`.
 To (temporarily) stop all services, run `docker-compose stop`.
-If you want to remove all services, run `docker-compose down` (this requires a rebuild!)
+If you want to remove all services, run `docker-compose down` (this requires a rebuild!).
 
-The environment consists of four services `mysql`, `php`, `apache` and `redis`.
-
-All of these services can be accessed via `docker-compose exec [service] bash`.
+All of the services can be accessed via `docker-compose exec [service] bash`.
 
 The `php` service will be used most often, as it contains the compiled PHP installation,
 has access to composer, can run your unit tests, etc.
@@ -43,7 +41,9 @@ has access to composer, can run your unit tests, etc.
 ## Known Issues
 
 * Build process should be aware of mysql initialization status
-* Build script should stop and clean up if something goes wrong
-* Not all container configuration is synchronized with `.env`
+* Build script should stop and clean up if something goes wrong along the way
+* Internal service ports are not set according to `.env`, but use their default ports.
+* Not all `.env` values are used yet to configure Pimcore on installation (like email)
 * Pimcore complains about missing email settings
 * Redis is not configured as the default Pimcore cache
+* Redis logs are not yet generated to mounted `var` volume
