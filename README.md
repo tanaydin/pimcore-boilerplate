@@ -27,13 +27,13 @@ Pimcore will be available at `127.0.0.1:8080/admin`
 
 ## Usage
 
-The installation will build and start four docker services on your machine: `mysql`, `php`, `apache` and `redis`.
+The installation will build and start four docker service containers on your machine: `mysql`, `php`, `apache` and `redis`.
 They are all required to be up and running in order for your Pimcore application to work properly.
-This can be done easily by navigating to the project root, and executing `docker-compose up -d`.
-To (temporarily) stop all services, run `docker-compose stop`.
-If you want to remove all services, run `docker-compose down` (this requires a rebuild!).
 
-All of the services can be accessed via `docker-compose exec [service] bash`.
+* To start the service containers, run `docker-compose up -d`.
+* To stop running service containers, run `docker-compose stop`.
+* To access a service container bash shell, run `docker-compose exec [service] bash` (this requires the service to be running).
+* To remove all service containers, run `docker-compose down --volumes` (this requires a rebuild).
 
 The `php` service will be used most often, as it contains the compiled PHP installation,
 has access to composer, can run your unit tests, etc.
