@@ -8,6 +8,8 @@ RUN useradd --create-home $user
 RUN usermod --uid $uid --gid $gid $user
 RUN usermod -aG $user "www-data"
 
+COPY "./*.ini" "/usr/local/etc/php/conf.d/"
+
 RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y
 
 RUN apt-get install -y \
@@ -73,6 +75,4 @@ RUN docker-php-ext-enable \
     imagick \
     redis
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-COPY ./*.ini /usr/local/etc/php/conf.d/
+RUN curl -sS "https://getcomposer.org/installer" | php -- --install-dir="/usr/local/bin" --filename="composer"

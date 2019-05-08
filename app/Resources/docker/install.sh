@@ -7,35 +7,32 @@ gid=$(id -g)
 #Removing containers and images
 docker-compose down --volumes --remove-orphans --rmi all
 
-#Warming up directories
-bash -c "rm -rf vendor/ var/ web/var/ web/bundles/"
-bash -c "mkdir --parents vendor/ var/ web/var/ web/bundles/"
-bash -c "git checkout var/ web/var/ web/bundles/"
-bash -c "cp --no-clobber --recursive app/Resources/docker/logs/* var/"
+#Removing var directories
+bash -c "rm --recursive --force vendor/ var/ web/var/ web/bundles/"
 
-#Building mysql
-docker-compose build --build-arg user=${user} --build-arg uid=${uid} --build-arg gid=${gid} "mysql"
+#Warming up var directories
+bash -c "mkdir var/"
+bash -c "cp --recursive app/Resources/docker/mysql/log var/mysql/"
+bash -c "cp --recursive app/Resources/docker/php/log var/php/"
+bash -c "cp --recursive app/Resources/docker/apache/log var/apache/"
 
-#Starting mysql (giving it time to initialize)
-docker-compose up --no-build --remove-orphans --detach "mysql"
+#Building images
+docker-compose build --build-arg user=${user} --build-arg uid=${uid} --build-arg gid=${gid} "mysql" "redis" "php" "apache"
 
-#Building remaining images
-docker-compose build --build-arg user=${user} --build-arg uid=${uid} --build-arg gid=${gid} "redis" "php" "apache"
+#Starting containers
+docker-compose up --no-build --remove-orphans --detach "mysql" "redis" "php" "apache"
 
-#Starting remaining containers
-docker-compose up --no-build --remove-orphans --detach "redis" "php" "apache"
+#Installing composer packages
+docker-compose exec php bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --no-suggest --no-interaction --dev -vvv"
 
-#Installing (only) composer packages
-docker-compose exec php bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --no-scripts --no-suggest --no-interaction --dev -vvv"
+#Installing pimcore
+docker-compose exec php bash -c "vendor/bin/pimcore-install --env=dev --ignore-existing-config --no-interaction -vvv"
 
-#Installing (clean) pimcore project
-docker-compose exec php bash -c "vendor/bin/pimcore-install --ignore-existing-config --no-interaction --env=dev -vvv"
-
-#Running composer post install scripts
-docker-compose exec php bash -c "composer run-script post-install-cmd"
+#Installing assets
+docker-compose exec php bash -c "bin/console assets:install --env=dev --symlink -vvv"
 
 #clearing symfony cache
-docker-compose exec php bash -c "bin/console cache:clear --no-warmup --env=dev"
+docker-compose exec php bash -c "bin/console cache:clear --env=dev --no-interaction --no-warmup -vvv"
 
 #clearing pimcore cache
-docker-compose exec php bash -c "bin/console pimcore:cache:clear --env=dev"
+docker-compose exec php bash -c "bin/console pimcore:cache:clear --env=dev --no-interaction -vvv"
