@@ -17,7 +17,7 @@ bash -c "cp --recursive app/Resources/docker/php/log var/php/"
 bash -c "cp --recursive app/Resources/docker/apache/log var/apache/"
 
 #Building images
-docker-compose build --build-arg user=${user} --build-arg uid=${uid} --build-arg gid=${gid} "mysql" "redis" "php" "apache"
+docker-compose build "mysql" "redis" "php" "apache"
 
 #Starting containers
 docker-compose up --no-build --remove-orphans --detach "mysql" "redis" "php" "apache"

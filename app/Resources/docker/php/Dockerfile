@@ -1,13 +1,5 @@
 FROM php:7.2-fpm
 
-ARG user
-ARG uid
-ARG gid
-
-RUN groupadd -g $gid
-RUN useradd --create-home $user -u $uid -g $gid
-RUN usermod -aG $user "www-data"
-
 COPY "./*.ini" "/usr/local/etc/php/conf.d/"
 
 RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y
