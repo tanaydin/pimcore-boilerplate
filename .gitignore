@@ -4,7 +4,7 @@ nbproject
 
 # Composer
 #/composer.lock
-/vendor/
+# /vendor/
 
 # Symfony
 /app/config/parameters.yml
