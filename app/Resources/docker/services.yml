@@ -51,7 +51,6 @@ services:
             - '../../..:/data/projects/pimcore'
             - '../../../var/php:/var/log/app'
         working_dir: '/data/projects/pimcore'
-        user: '${USER}'
         depends_on:
             - 'mysql'
             - 'redis'
