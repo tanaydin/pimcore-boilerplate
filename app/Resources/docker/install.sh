@@ -4,6 +4,7 @@ user=$(id -nu)
 uid=$(id -u)
 gid=$(id -g)
 
+if [[ $* == *-b* ]]; then
 #Removing containers and images
 docker-compose down --volumes --remove-orphans --rmi all
 
@@ -22,8 +23,10 @@ docker-compose build "mysql" "redis" "php" "apache"
 #Starting containers
 docker-compose up --no-build --remove-orphans --detach "mysql" "redis" "php" "apache"
 
+fi
+
 #Installing composer packages
-docker-compose exec php bash -c "COMPOSER_MEMORY_LIMIT=-1 composer install --no-suggest --no-interaction --dev -vvv"
+docker-compose exec php bash -c "COMPOSER_MEMORY_LIMIT=-1 composer update --no-suggest --no-interaction --dev -vvv"
 
 #Installing pimcore
 docker-compose exec php bash -c "vendor/bin/pimcore-install --env=dev --ignore-existing-config --no-interaction -vvv"
