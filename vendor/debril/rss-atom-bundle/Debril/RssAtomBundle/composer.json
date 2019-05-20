@@ -1,0 +1,40 @@
+{
+    "name": "debril/rss-atom-bundle",
+    "type": "symfony-bundle",
+    "description": "RSS and Atom support for Symfony",
+    "keywords": ["rss", "atom"],
+    "homepage": "http://debril.org/category/rss-atom-bundle/",
+    "license": "LGPL-3.0",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/alexdebril/rss-atom-bundle.git"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "debril/feed-io": "~2.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.5",
+        "doctrine/common": "~2.3",
+        "doctrine/doctrine-bundle": "~1.2",
+        "symfony/framework-bundle": "~2.6|~3.0 <3.3",
+        "symfony/config": "~2.6|~3.0 <3.3",
+        "symfony/validator": "~2.6|~3.0 <3.3",
+        "symfony/finder": "~2.6|~3.0 <3.3",
+        "symfony/browser-kit": "~2.6|~3.0 <3.3"
+    },
+    "autoload": {
+        "psr-0": {
+            "Debril\\RssAtomBundle": ""
+        }
+    },
+    "target-dir": "Debril/RssAtomBundle",
+    "config": {
+        "bin-dir": "bin",
+        "preferred-install": {
+            "*": "dist"
+        }
+    }
+}
