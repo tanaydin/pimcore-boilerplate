@@ -5,13 +5,13 @@ if [[ $* == *-b* ]]; then
     docker-compose down --volumes --remove-orphans --rmi all
 
     #Removing var directories
-    bash -c "rm --recursive --force vendor/ var/ web/var/ web/bundles/"
+    bash -c "rm -rf vendor/ var/ web/var/ web/bundles/"
 
     #Warming up var directories
     bash -c "mkdir var/"
-    bash -c "cp --recursive app/Resources/docker/mysql/log var/mysql/"
-    bash -c "cp --recursive app/Resources/docker/php/log var/php/"
-    bash -c "cp --recursive app/Resources/docker/apache/log var/apache/"
+    bash -c "cp -r app/Resources/docker/mysql/log var/mysql/"
+    bash -c "cp -r app/Resources/docker/php/log var/php/"
+    bash -c "cp -r app/Resources/docker/apache/log var/apache/"
 
     #Building images
     docker-compose build "mysql" "redis" "php" "apache"
